@@ -1,0 +1,33 @@
+name: retail_analytics_hub
+version: 1.0
+config-version: 2
+
+profile: snowflake_profile
+
+model-paths: ["models"]
+analysis-paths: ["analysis"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_modules"
+
+models:
+  retail_analytics_hub:
+    stage:
+      +schema: stage
+      +materialized: view
+      +tags: ['staging','raw']
+      +description: "Stage layer models for raw data cleaning and standardization."
+    intermediate:
+      +schema: intermediate
+      +materialized: view
+      +tags: ['intermediate','transformation']
+      +description: "Intermediate layer models combining multiple staging tables."
+    warehouse:
+      +schema: warehouse
+      +materialized: table
+      +tags: ['warehouse','aggregated']
+      +description: "Warehouse layer models for reporting and analytics."
